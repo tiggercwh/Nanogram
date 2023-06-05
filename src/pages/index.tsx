@@ -16,36 +16,36 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Picross Clone</title>
-        <meta name="description" content="A simple Picross clone." />
+        <title>Nanogram / Picross</title>
+        <meta name="description" content="A Nanogram Game" />
       </Head>
 
       <div className="h-full min-h-fit flex flex-col items-center justify-evenly py-4">
         <h2 className="text-3xl lg:text-4xl mt-12 mb-8 text-center">
-          A simple nonogram/picross game
+          A simple Nanogram (picross) game
         </h2>
         <div className="my-4">
           <Board levelData={levelData || null} cellSize={isMobile ? 0 : 2} />
         </div>
         <div className="text-2xl text-center my-4">
-          Developed by{" "}
-          <Link href="https://kiralu.dev">
-            <a className="text-blue-400">Kira Lu</a>
+          By{" "}
+          <Link href="https://www.google.com">
+            <a className="text-blue-600">Tigger Chan</a>
           </Link>
           <br />
           <br />
-          Built with the{" "}
+          Built with Typescript, tRPC, tailwindcss,
+          <br />
+          the{" "}
           <Link href="https://github.com/t3-oss/create-t3-app">
-            <a className="text-blue-400">T3</a>
+            <a className="text-blue-600">T3</a>
           </Link>{" "}
           stack
-          <br />
-          (Typescript, tRPC, tailwindcss, Next.js, Prisma, MySQL)
           <br />
           <br />
           Deployed on{" "}
           <Link href="https://vercel.com/">
-            <a className="text-blue-400">Vercel</a>
+            <a className="text-blue-600">Vercel</a>
           </Link>{" "}
           serverlessly.
         </div>

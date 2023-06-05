@@ -33,7 +33,7 @@ const Board = (
   const totalWidth = xClues.length + activeGrid.length;
   const totalHeight = yClues.length + activeGrid.length;
 
-  const colorGrid = levelData?.data;
+  const colorGrid = levelData?.data as (string | null)[][];
 
   const sizes = [
     {
@@ -190,14 +190,14 @@ const Board = (
   return (
     <>
       <div>
-        <table className={`relative bg-sky-700 ${styles.board}`}>
+        <table className={`relative bg-yellow-100 ${styles.board}`}>
           <tbody>
             <tr>
               <td></td>
               {yClues?.map((clue, i) => {
                 return (
                   <th
-                    className={`transition-colors font-semibold text-center align-bottom bg-sky-900 ${
+                    className={`transition-colors font-semibold text-center align-bottom bg-yellow-300 ${
                       yCluesFullfilled[i] ? "text-green-500" : "text-gray-400"
                     }`}
                     style={{ fontSize: fontSize }}
@@ -227,7 +227,7 @@ const Board = (
                   style={{ fontSize: fontSize }}
                 >
                   <th
-                    className={`transition-colors font-semibold flex flex-row justify-end text-right bg-sky-900 ${
+                    className={`transition-colors font-semibold flex flex-row justify-end text-right bg-yellow-300 ${
                       xCluesFullfilled[i] ? "text-green-500" : "text-gray-400"
                     }`}
                   >
@@ -249,7 +249,7 @@ const Board = (
                     if (row === undefined) return null;
                     const cell = row[j];
                     if (cell === undefined) return null;
-                    const cellColor = colorGrid[i][j];
+                    const cellColor = colorGrid[i]?.[j];
                     return (
                       <td
                         key={`cell-${i}-${j}`}
