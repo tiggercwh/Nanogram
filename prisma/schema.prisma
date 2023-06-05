@@ -3,13 +3,14 @@
 
 generator client {
     provider        = "prisma-client-js"
-    previewFeatures = ["referentialIntegrity"]
+    previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
     provider             = "postgresql"
     url                  = env("DATABASE_URL")
-    referentialIntegrity = "prisma"
+    directUrl         = env("POSTGRES_URL_NON_POOLING")
+    shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model Level {
