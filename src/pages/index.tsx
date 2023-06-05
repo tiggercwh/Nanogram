@@ -25,7 +25,9 @@ const Home: NextPage = () => {
           A simple Nanogram (picross) game
         </h2>
         <div className="my-4">
-          <Board levelData={levelData || null} cellSize={isMobile ? 0 : 2} />
+          {levelData?.data && (
+            <Board levelData={levelData} cellSize={isMobile ? 0 : 2} />
+          )}
         </div>
         <div className="text-2xl text-center my-4">
           By{" "}

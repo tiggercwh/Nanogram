@@ -1,5 +1,4 @@
 import styles from "./Board.module.css";
-import { useEffect, useState } from "react";
 import type { Level } from "@prisma/client";
 import useBoard from "./Board/useBoard";
 
@@ -15,7 +14,6 @@ const Board = (
   }
 ) => {
   const BoardData = levelData?.data as (string | null)[][];
-  if (!BoardData) return null;
 
   //input: levelData?.data
   //xCluesFullfilled, yCluesFullfilled, activeGrid, pointerFill, completed, handleMouseOver, handleMouseDown

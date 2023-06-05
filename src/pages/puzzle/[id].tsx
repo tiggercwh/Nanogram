@@ -59,7 +59,7 @@ const Puzzle = (
           &ldquo;{data?.name}&rdquo;
         </header>
         <div className="my-2">
-          {!levelLoading && (
+          {!levelLoading && levelData?.data && (
             <Board levelData={levelData} cellSize={isMobile ? 0 : 2} />
           )}
         </div>
