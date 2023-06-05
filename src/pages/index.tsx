@@ -34,7 +34,7 @@ const Home: NextPage = () => {
           </Link>
           <br />
           <br />
-          Built with Typescript, tRPC, tailwindcss,
+          Built with Typescript, tRPC, Tailwindcss,
           <br />
           the{" "}
           <Link href="https://github.com/t3-oss/create-t3-app">
