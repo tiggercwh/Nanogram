@@ -7,7 +7,7 @@ interface DoubleRangeSliderProps {
   onChange: (lowVal: number, highVal: number) => void;
 }
 
-const DoubleRangeSlider = ({ min, max, onChange }: BoardProps) => {
+const DoubleRangeSlider = ({ min, max, onChange }: DoubleRangeSliderProps) => {
   const [lowVal, setLowVal] = useState(min);
   const [highVal, setHighVal] = useState(max);
 
