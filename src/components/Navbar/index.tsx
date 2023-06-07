@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { trpc } from "../utils/trpc";
+import { trpc } from "../../utils/trpc";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
   const {
@@ -59,11 +59,7 @@ const Navbar = () => {
           </li>
           <li className="py-4">
             <button
-              disabled={
-                randomLevel === undefined ||
-                randomLevel === null ||
-                randomLevelLoading
-              }
+              disabled={!randomLevel || randomLevelLoading}
               onClick={async () => {
                 setNavOpen(false);
                 await refetchRandomLevel();

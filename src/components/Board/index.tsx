@@ -1,6 +1,6 @@
 import styles from "./Board.module.css";
 import type { Level } from "@prisma/client";
-import useBoard from "./Board/useBoard";
+import useBoard from "./useBoard";
 
 interface BoardProps {
   levelData: Level | null;

@@ -4,13 +4,12 @@ import type { AppRouter } from "../server/router";
 import type { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
 import "../styles/globals.css";
-import TheNavbar from "../components/TheNavbar";
-
+import Navbar from "../components/Navbar";
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <div className="h-full flex flex-col">
       <div className="">
-        <TheNavbar />
+        <Navbar />
       </div>
       <div className="flex-grow bg-gray-400">
         <Component {...pageProps} />
