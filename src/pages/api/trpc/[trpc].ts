@@ -8,7 +8,6 @@ export default createNextApiHandler({
   router: appRouter,
   createContext: createContext,
   responseMeta({ ctx, paths, type, errors }) {
-    console.log(ctx.res, { paths, type, errors });
     // checking that no procedures errored
     const allOk = errors.length === 0;
     // checking we're doing a query request
