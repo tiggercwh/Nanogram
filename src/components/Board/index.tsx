@@ -16,7 +16,7 @@ const Board = (
   const BoardData = levelData?.data as (string | null)[][];
 
   //input: levelData?.data
-  //xCluesFullfilled, yCluesFullfilled, activeGrid, pointerFill, completed, handleMouseOver, handleMouseDown
+  //xCluesFullfilled, yCluesFullfilled, activeGrid, pointerFill, completed, handlePointerOver, handlePointerDown
   const {
     adjustedCellSize,
     fontSize,
@@ -26,8 +26,8 @@ const Board = (
     yCluesFullfilled,
     activeGrid,
     completed,
-    handleMouseOver,
-    handleMouseDown,
+    handlePointerOver,
+    handlePointerDown,
   } = useBoard(BoardData, cellSize);
 
   return (
@@ -105,12 +105,12 @@ const Board = (
                           width: adjustedCellSize,
                           height: adjustedCellSize,
                         }}
-                        onMouseOver={(
-                          event: React.MouseEvent<HTMLTableCellElement>
-                        ) => handleMouseOver(event, i, j)}
-                        onMouseDown={(
-                          event: React.MouseEvent<HTMLTableCellElement>
-                        ) => handleMouseDown(event, i, j)}
+                        onPointerOver={(
+                          event: React.PointerEvent<HTMLTableCellElement>
+                        ) => handlePointerOver(event, i, j)}
+                        onPointerDown={(
+                          event: React.PointerEvent<HTMLTableCellElement>
+                        ) => handlePointerDown(event, i, j)}
                       ></td>
                     );
                   })}

@@ -1,0 +1,3 @@
+const DEFAULT_PUZZLE_ID = process.env.NEXT_PUBLIC_DEFAULT_PUZZLE_ID;
+
+export { DEFAULT_PUZZLE_ID };

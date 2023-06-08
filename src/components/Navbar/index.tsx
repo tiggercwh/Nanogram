@@ -36,11 +36,20 @@ const Navbar = () => {
             lg:bg-yellow-300 lg:flex-row lg:justify-around lg:w-full h-full lg:h-auto lg:relative 
             `}
       >
-        <Link href="/">
-          <a className="text-5xl bg-yellow-300 w-full text-center lg:text-left px-16 lg:px-12 py-4">
-            Nanogram
-          </a>
-        </Link>
+        <div className="flex flex-row bg-yellow-300 w-full text-center lg:text-left px-16 lg:px-4 py-4">
+          <Link href="/">
+            <a className="text-5xl bg-yellow-300 text-center lg:text-left px-4 py-4">
+              Nanogram
+            </a>
+          </Link>
+          <span className="text-base self-end whitespace-nowrap">
+            By{" "}
+            <Link href="https://www.google.com">
+              <a className="text-blue-600">Tigger Chan</a>
+            </Link>
+          </span>
+        </div>
+
         <ul className="flex flex-col items-center gap-24 lg:flex-row text-3xl px-12 lg:px-4 text-center lg:text-left">
           <li className="py-4">
             <Link href="/">

@@ -141,8 +141,8 @@ const useBoard = (BoardData: (string | null)[][], cellSize: number) => {
     return JSON.stringify(activeGrid) === JSON.stringify(answerGrid);
   };
 
-  const handleMouseOver = (
-    event: React.MouseEvent<HTMLTableCellElement>,
+  const handlePointerOver = (
+    event: React.PointerEvent<HTMLTableCellElement>,
     row: number,
     column: number
   ) => {
@@ -152,8 +152,8 @@ const useBoard = (BoardData: (string | null)[][], cellSize: number) => {
     }
   };
 
-  const handleMouseDown = (
-    event: React.MouseEvent<HTMLTableCellElement>,
+  const handlePointerDown = (
+    event: React.PointerEvent<HTMLTableCellElement>,
     rowIndex: number,
     columnIndex: number
   ) => {
@@ -177,8 +177,8 @@ const useBoard = (BoardData: (string | null)[][], cellSize: number) => {
     activeGrid,
     pointerFill,
     completed,
-    handleMouseOver,
-    handleMouseDown,
+    handlePointerOver,
+    handlePointerDown,
   };
 };
 
