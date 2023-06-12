@@ -5,6 +5,7 @@ import { trpc } from "../utils/trpc";
 import { useEffect, useState } from "react";
 import { BlockPicker } from "react-color";
 import useMediaQuery from "../hooks/useMediaQuery";
+// import calcCombForGrid from "../utils/calculateCombinations";
 
 const createEmptyGrid = (
   width: number,
@@ -84,6 +85,10 @@ const Editor: NextPage = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (formData.name === "") return;
+    // TO DO: Implement clue calculation
+    // console.log({ grid });
+    // calcCombForGrid(grid);
+    // return;
     mutate({
       name: formData.name,
       data: grid,

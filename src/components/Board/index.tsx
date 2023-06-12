@@ -1,6 +1,7 @@
 import styles from "./Board.module.css";
 import type { Level } from "@prisma/client";
 import useBoard from "./useBoard";
+import UndoButton from "../UndoButton";
 
 interface BoardProps {
   levelData: Level | null;
@@ -16,7 +17,7 @@ const Board = (
   const BoardData = levelData?.data as (string | null)[][];
 
   //input: levelData?.data
-  //xCluesFullfilled, yCluesFullfilled, activeGrid, pointerFill, completed, handlePointerOver, handlePointerDown
+  //xCluesFullfilled, yCluesFullfilled, currentGrid, pointerFill, completed, handlePointerOver, handlePointerDown
   const {
     adjustedCellSize,
     fontSize,
@@ -24,7 +25,10 @@ const Board = (
     yClues,
     xCluesFullfilled,
     yCluesFullfilled,
-    activeGrid,
+    currentGrid,
+    setCurrentGrid,
+    gridHistory,
+    setGridHistory,
     completed,
     handlePointerOver,
     handlePointerDown,
@@ -32,8 +36,8 @@ const Board = (
 
   return (
     <>
-      <div>
-        <table className={`relative bg-yellow-100 ${styles.board}`}>
+      <div className="grid grid-cols-10">
+        <table className={`col-span-9 relative bg-yellow-100 ${styles.board}`}>
           <tbody>
             <tr>
               <td></td>
@@ -62,7 +66,7 @@ const Board = (
                 );
               })}
             </tr>
-            {activeGrid.map((row, i) => {
+            {currentGrid.map((row, i) => {
               return (
                 <tr
                   className="relative"
@@ -88,7 +92,7 @@ const Board = (
                     ))}
                   </th>
                   {row.map((_, j) => {
-                    const row = activeGrid[i];
+                    const row = currentGrid[i];
                     if (row === undefined) return null;
                     const cell = row[j];
                     if (cell === undefined) return null;
@@ -119,6 +123,13 @@ const Board = (
             })}
           </tbody>
         </table>
+        <div className="col-span-1">
+          <UndoButton
+            history={gridHistory}
+            setState={setCurrentGrid}
+            setHistory={setGridHistory}
+          />
+        </div>
       </div>
     </>
   );

@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
 
 const useBoard = (BoardData: (string | null)[][], cellSize: number) => {
-  const [activeGrid, setActiveGrid] = useState<boolean[][]>([]);
+  const [currentGrid, setCurrentGrid] = useState<boolean[][]>([]);
+  const [gridHistory, setGridHistory] = useState<boolean[][]>([]);
   const [answerGrid, setAnswerGrid] = useState<boolean[][]>([]);
   const [completed, setCompleted] = useState<boolean>(false);
   const [pointerFill, setPointerFill] = useState<boolean | null>(null);
 
   const [clues, setClues] = useState<[number[][], number[][]]>([[], []]);
-  const xClues = clues[0];
-  const yClues = clues[1];
+  const [xClues, yClues] = clues;
 
-  const totalWidth = xClues.length + activeGrid.length;
-  const totalHeight = yClues.length + activeGrid.length;
+  const totalWidth = xClues.length + currentGrid.length;
+  const totalHeight = yClues.length + currentGrid.length;
 
   const sizes = [
     {
@@ -51,7 +51,7 @@ const useBoard = (BoardData: (string | null)[][], cellSize: number) => {
     console.log({ BoardData });
     const newGrid = generateEmptyGrid(BoardData);
     const answerGrid = generateAnswerGrid(BoardData);
-    setActiveGrid(newGrid);
+    setCurrentGrid(newGrid);
     setAnswerGrid(answerGrid);
     setCompleted(false);
     setPointerFill(null);
@@ -104,7 +104,7 @@ const useBoard = (BoardData: (string | null)[][], cellSize: number) => {
 
   const checkClues = () => {
     const [newXClues, newYClues] = generateClues(
-      activeGrid.map((row) => row.map((cell) => !!cell))
+      currentGrid.map((row) => row.map((cell) => !!cell))
     );
     const newXCluesFullfilled = newXClues!.map(
       (clues, i) =>
@@ -120,13 +120,17 @@ const useBoard = (BoardData: (string | null)[][], cellSize: number) => {
     setYCluesFullfilled(newYCluesFullfilled);
   };
 
-  const changeCell = (row: number, column: number, state: boolean) => {
+  const changeCell = (
+    grid: boolean[][],
+    row: number,
+    column: number,
+    state: boolean
+  ) => {
     if (completed) return; // No changes allowed after completion
 
     // Update the active grid
-    const newGrid = [...activeGrid];
-    newGrid[row]![column]! = state;
-    setActiveGrid(newGrid);
+    grid[row]![column]! = state;
+    setCurrentGrid(grid);
 
     // Update the clues
     checkClues();
@@ -138,7 +142,7 @@ const useBoard = (BoardData: (string | null)[][], cellSize: number) => {
   };
 
   const validateGrid = () => {
-    return JSON.stringify(activeGrid) === JSON.stringify(answerGrid);
+    return JSON.stringify(currentGrid) === JSON.stringify(answerGrid);
   };
 
   const handlePointerOver = (
@@ -148,7 +152,7 @@ const useBoard = (BoardData: (string | null)[][], cellSize: number) => {
   ) => {
     if (pointerFill === null) return;
     if (event.buttons === 1) {
-      changeCell(row, column, pointerFill);
+      changeCell(currentGrid, row, column, pointerFill);
     }
   };
 
@@ -158,12 +162,17 @@ const useBoard = (BoardData: (string | null)[][], cellSize: number) => {
     columnIndex: number
   ) => {
     if (event.buttons === 1) {
-      const row = activeGrid[rowIndex];
+      setGridHistory((history) => [
+        ...history,
+        JSON.parse(JSON.stringify(currentGrid)),
+      ]);
+      const grid = JSON.parse(JSON.stringify(currentGrid));
+      const row = grid[rowIndex];
       if (row === undefined) return;
       const cell = row[columnIndex];
       if (cell === undefined) return;
       setPointerFill(cell === false);
-      changeCell(rowIndex, columnIndex, !cell);
+      changeCell(grid, rowIndex, columnIndex, !cell);
     }
   };
 
@@ -174,7 +183,10 @@ const useBoard = (BoardData: (string | null)[][], cellSize: number) => {
     yClues,
     xCluesFullfilled,
     yCluesFullfilled,
-    activeGrid,
+    currentGrid,
+    setCurrentGrid,
+    gridHistory,
+    setGridHistory,
     pointerFill,
     completed,
     handlePointerOver,
