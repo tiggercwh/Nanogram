@@ -2,6 +2,9 @@ import styles from "./Board.module.css";
 import type { Level } from "@prisma/client";
 import useBoard from "./useBoard";
 import UndoButton from "../UndoButton";
+import Toggle from "../Toggle";
+import { useState } from "react";
+import { RxCross2 } from "react-icons/rx";
 
 interface BoardProps {
   levelData: Level | null;
@@ -15,11 +18,13 @@ const Board = (
   }
 ) => {
   const BoardData = levelData?.data as (string | null)[][];
+  const [isCrossing, setIsCrossing] = useState(false);
 
   //input: levelData?.data
   //xCluesFullfilled, yCluesFullfilled, currentGrid, pointerFill, completed, handlePointerOver, handlePointerDown
   const {
     adjustedCellSize,
+    crossGrid,
     fontSize,
     xClues,
     yClues,
@@ -32,15 +37,34 @@ const Board = (
     completed,
     handlePointerOver,
     handlePointerDown,
-  } = useBoard(BoardData, cellSize);
+  } = useBoard(BoardData, cellSize, isCrossing);
 
   return (
     <>
       <div className="grid grid-cols-10">
-        <table className={`col-span-9 relative bg-yellow-100 ${styles.board}`}>
+        <table className={`col-span-10 relative bg-gray-800 ${styles.board}`}>
           <tbody>
             <tr>
-              <td></td>
+              <td>
+                <div className="flex flex-col w-full h-full items-center py-4 gap-4">
+                  <UndoButton
+                    history={gridHistory}
+                    setState={setCurrentGrid}
+                    setHistory={setGridHistory}
+                  />
+                  <div className="grid grid-cols-3 w-full">
+                    <div className="flex items-center justify-center col-span-1">
+                      <div className={`w-8 h-8 bg-board-squares`} />
+                    </div>
+                    <div className="flex items-center justify-center w-full h-full col-span-1">
+                      <Toggle checked={isCrossing} setChecked={setIsCrossing} />
+                    </div>
+                    <div className="flex items-center justify-center col-span-1">
+                      <RxCross2 className="w-full h-full text-red-600" />
+                    </div>
+                  </div>
+                </div>
+              </td>
               {yClues?.map((clue, i) => {
                 return (
                   <th
@@ -92,9 +116,8 @@ const Board = (
                     ))}
                   </th>
                   {row.map((_, j) => {
-                    const row = currentGrid[i];
-                    if (row === undefined) return null;
-                    const cell = row[j];
+                    const isCrossed = crossGrid[i]![j];
+                    const cell = currentGrid[i]![j];
                     if (cell === undefined) return null;
                     const cellColor = BoardData[i]?.[j];
                     return (
@@ -115,7 +138,11 @@ const Board = (
                         onPointerDown={(
                           event: React.PointerEvent<HTMLTableCellElement>
                         ) => handlePointerDown(event, i, j)}
-                      ></td>
+                      >
+                        {isCrossed && (
+                          <RxCross2 className="w-full h-full text-red-600" />
+                        )}
+                      </td>
                     );
                   })}
                 </tr>
@@ -123,13 +150,6 @@ const Board = (
             })}
           </tbody>
         </table>
-        <div className="col-span-1">
-          <UndoButton
-            history={gridHistory}
-            setState={setCurrentGrid}
-            setHistory={setGridHistory}
-          />
-        </div>
       </div>
     </>
   );

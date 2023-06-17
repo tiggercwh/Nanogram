@@ -15,11 +15,7 @@ function UndoButton({
 }: IUndoButtonProps) {
   const disabled = history.length === 0;
   return (
-    <div
-      className={`flex flex-col w-full items-center${
-        disabled ? " opacity-40" : ""
-      }`}
-    >
+    <div className={`${disabled ? " opacity-40" : ""}`}>
       <button
         disabled={disabled}
         className="p-2 bg-white rounded-md border-2 border-zinc-500"
@@ -31,7 +27,7 @@ function UndoButton({
           setState(latestHistory);
         }}
       >
-        <AiOutlineUndo />
+        <AiOutlineUndo size={"1.5em"} />
       </button>
     </div>
   );

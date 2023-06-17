@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 
-const useBoard = (BoardData: (string | null)[][], cellSize: number) => {
+const useBoard = (
+  BoardData: (string | null)[][],
+  cellSize: number,
+  isCrossing: boolean
+) => {
   const [currentGrid, setCurrentGrid] = useState<boolean[][]>([]);
   const [gridHistory, setGridHistory] = useState<boolean[][]>([]);
   const [answerGrid, setAnswerGrid] = useState<boolean[][]>([]);
   const [completed, setCompleted] = useState<boolean>(false);
   const [pointerFill, setPointerFill] = useState<boolean | null>(null);
+
+  const [crossGrid, setCrossGrid] = useState<boolean[][]>([]);
 
   const [clues, setClues] = useState<[number[][], number[][]]>([[], []]);
   const [xClues, yClues] = clues;
@@ -45,12 +51,16 @@ const useBoard = (BoardData: (string | null)[][], cellSize: number) => {
     };
 
     const generateEmptyGrid = (grid: (string | null)[][]): boolean[][] => {
-      return grid.map((row) => Array(row.length).fill(false));
+      const newgrid = JSON.parse(JSON.stringify(grid)) as boolean[][];
+      return newgrid.map((row) => new Array(row.length).fill(false));
     };
 
     console.log({ BoardData });
     const newGrid = generateEmptyGrid(BoardData);
     const answerGrid = generateAnswerGrid(BoardData);
+    const crossGrid = generateEmptyGrid(BoardData);
+
+    setCrossGrid(crossGrid);
     setCurrentGrid(newGrid);
     setAnswerGrid(answerGrid);
     setCompleted(false);
@@ -130,7 +140,11 @@ const useBoard = (BoardData: (string | null)[][], cellSize: number) => {
 
     // Update the active grid
     grid[row]![column]! = state;
-    setCurrentGrid(grid);
+
+    const setGrid = !isCrossing ? setCurrentGrid : setCrossGrid;
+    setGrid(grid);
+
+    console.log({ crossGrid, currentGrid, isCrossing });
 
     // Update the clues
     checkClues();
@@ -139,6 +153,27 @@ const useBoard = (BoardData: (string | null)[][], cellSize: number) => {
     if (validateGrid()) {
       setCompleted(true);
     }
+  };
+
+  const changeGrid = (
+    rowIndex: number,
+    columnIndex: number,
+    isCurrentGrid: boolean
+  ) => {
+    const toChangeGrid = isCurrentGrid ? currentGrid : crossGrid;
+    const referenceGrid = isCurrentGrid ? crossGrid : currentGrid;
+
+    if (referenceGrid[rowIndex]![columnIndex]) return;
+    const grid = JSON.parse(JSON.stringify(toChangeGrid));
+    if (isCurrentGrid)
+      setGridHistory((history) => [
+        ...history,
+        JSON.parse(JSON.stringify(toChangeGrid)),
+      ]);
+    const cell = grid[rowIndex][columnIndex];
+    if (cell === undefined) return;
+    setPointerFill(!cell);
+    changeCell(grid, rowIndex, columnIndex, !cell);
   };
 
   const validateGrid = () => {
@@ -152,7 +187,10 @@ const useBoard = (BoardData: (string | null)[][], cellSize: number) => {
   ) => {
     if (pointerFill === null) return;
     if (event.buttons === 1) {
-      changeCell(currentGrid, row, column, pointerFill);
+      const toChangeGrid = isCrossing ? crossGrid : currentGrid;
+      const referenceGrid = isCrossing ? currentGrid : crossGrid;
+      if (referenceGrid[row]![column]) return;
+      changeCell(toChangeGrid, row, column, pointerFill);
     }
   };
 
@@ -162,22 +200,13 @@ const useBoard = (BoardData: (string | null)[][], cellSize: number) => {
     columnIndex: number
   ) => {
     if (event.buttons === 1) {
-      setGridHistory((history) => [
-        ...history,
-        JSON.parse(JSON.stringify(currentGrid)),
-      ]);
-      const grid = JSON.parse(JSON.stringify(currentGrid));
-      const row = grid[rowIndex];
-      if (row === undefined) return;
-      const cell = row[columnIndex];
-      if (cell === undefined) return;
-      setPointerFill(cell === false);
-      changeCell(grid, rowIndex, columnIndex, !cell);
+      changeGrid(rowIndex, columnIndex, !isCrossing);
     }
   };
 
   return {
     adjustedCellSize,
+    crossGrid,
     fontSize,
     xClues,
     yClues,
