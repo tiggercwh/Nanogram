@@ -33,8 +33,6 @@ const useBoard = (
     },
   ];
 
-  console.log(sizes[cellSize]);
-
   const adjustedCellSize =
     sizes[cellSize]!.cell / Math.max(totalWidth, totalHeight);
 

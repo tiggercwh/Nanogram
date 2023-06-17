@@ -43,8 +43,6 @@ const Puzzle = (
   const levelData = data || null;
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  console.log({ levelData });
-
   return (
     <>
       <Head>
@@ -60,7 +58,7 @@ const Puzzle = (
         </header>
         <div className="my-2">
           {!levelLoading && levelData?.data && (
-            <Board levelData={levelData} cellSize={isMobile ? 0 : 2} />
+            <Board levelData={levelData} isMobile={isMobile} />
           )}
         </div>
         <h2 className="text-3xl my-8">Size: {`${data?.size}x${data?.size}`}</h2>

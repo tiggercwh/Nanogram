@@ -161,7 +161,6 @@ const Editor: NextPage = () => {
           value={formData.name}
           maxLength={64}
           onChange={(event) => {
-            console.log({ formData });
             setFormData({ ...formData, name: event.target.value });
           }}
         />
