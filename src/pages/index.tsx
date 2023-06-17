@@ -27,7 +27,7 @@ const Home: NextPage = () => {
         </h2>
         <div className="my-4">
           {levelData?.data && (
-            <Board levelData={levelData} cellSize={isMobile ? 0 : 2} />
+            <Board levelData={levelData} isMobile={isMobile} />
           )}
         </div>
         <div className="text-lg text-center my-4">

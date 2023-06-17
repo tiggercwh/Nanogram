@@ -112,7 +112,7 @@ const Puzzle: NextPage = () => {
                 <tr key={level.id} className="h-10">
                   <td>
                     <Link href={`/puzzle/${level.id}`}>
-                      <a className="block text-blue-400 overflow-ellipsis overflow-hidden whitespace-nowrap px-2 lg:px-8 w-40 lg:w-96">
+                      <a className="block text-blue-700 overflow-ellipsis overflow-hidden whitespace-nowrap px-2 lg:px-8 w-40 lg:w-96">
                         {level.name}
                       </a>
                     </Link>

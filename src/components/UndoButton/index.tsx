@@ -18,7 +18,7 @@ function UndoButton({
     <div className={`${disabled ? " opacity-40" : ""}`}>
       <button
         disabled={disabled}
-        className="p-2 bg-white rounded-md border-2 border-zinc-500"
+        className={`p-2 bg-white rounded-md border-2 border-zinc-500 ${customTwStyle}`}
         onClick={() => {
           if (disabled) return;
           const copiedHistory = [...history];
@@ -27,7 +27,7 @@ function UndoButton({
           setState(latestHistory);
         }}
       >
-        <AiOutlineUndo size={"1.5em"} />
+        <AiOutlineUndo size={"1em"} />
       </button>
     </div>
   );

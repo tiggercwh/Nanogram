@@ -12,7 +12,7 @@ function Toggle({ checked, setChecked }: IToggleProps) {
         <input
           type="checkbox"
           className="sr-only peer"
-          defaultChecked={checked}
+          checked={checked}
           onChange={() => setChecked((prevChecked) => !prevChecked)}
         />
         <div
@@ -21,9 +21,6 @@ function Toggle({ checked, setChecked }: IToggleProps) {
         after:rounded-full after:h-6 after:w-6 after:transition-all after:border-gray-300 after:border
         peer-checked:bg-yellow-400 peer-checked:after:translate-x-full peer-checked:after:bg-yellow-100"
         ></div>
-        {/* <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-          Yellow
-        </span> */}
       </label>
     </>
   );

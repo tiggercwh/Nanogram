@@ -15,25 +15,34 @@ const useBoard = (
 
   const [clues, setClues] = useState<[number[][], number[][]]>([[], []]);
   const [xClues, yClues] = clues;
+  const [xCluesFullfilled, setXCluesFullfilled] = useState([] as boolean[]);
+  const [yCluesFullfilled, setYCluesFullfilled] = useState([] as boolean[]);
 
   const totalWidth = xClues.length + currentGrid.length;
   const totalHeight = yClues.length + currentGrid.length;
 
   const sizes = [
     {
-      cell: 400,
-    },
-    {
-      cell: 700,
+      cell: 600,
     },
     {
       cell: 900,
     },
+    {
+      cell: 1200,
+    },
   ];
+
+  console.log(sizes[cellSize]);
+
   const adjustedCellSize =
     sizes[cellSize]!.cell / Math.max(totalWidth, totalHeight);
 
   const fontSize = adjustedCellSize / 2.5;
+
+  /*
+  Effects
+  */
 
   useEffect(() => {
     window.addEventListener(
@@ -55,7 +64,6 @@ const useBoard = (
       return newgrid.map((row) => new Array(row.length).fill(false));
     };
 
-    console.log({ BoardData });
     const newGrid = generateEmptyGrid(BoardData);
     const answerGrid = generateAnswerGrid(BoardData);
     const crossGrid = generateEmptyGrid(BoardData);
@@ -69,8 +77,19 @@ const useBoard = (
   }, [BoardData]);
 
   useEffect(() => {
+    if (currentGrid.length === 0) return;
+    // Update the clues
     checkClues();
-  }, [clues]);
+
+    // Check if the puzzle is completed
+    if (validateGrid()) {
+      setCompleted(true);
+    }
+  }, [currentGrid]);
+
+  /*
+  Helpers
+  */
 
   const clueFromArray = (array: boolean[]) => {
     const clue = [];
@@ -103,16 +122,14 @@ const useBoard = (
       xClues[i] = clueFromArray(grid[i] as boolean[]);
     }
     const yClues = [];
-    for (let i = 0; i < grid[0]!.length; i++) {
-      yClues[i] = clueFromArray(grid.map((row) => row[i]) as boolean[]);
+    for (let j = 0; j < grid[0]!.length; j++) {
+      yClues[j] = clueFromArray(grid.map((row) => row[j]) as boolean[]);
     }
     return [xClues, yClues];
   };
 
-  const [xCluesFullfilled, setXCluesFullfilled] = useState([] as boolean[]);
-  const [yCluesFullfilled, setYCluesFullfilled] = useState([] as boolean[]);
-
   const checkClues = () => {
+    // We can optimize this by only checking the clues that are affected by the last change
     const [newXClues, newYClues] = generateClues(
       currentGrid.map((row) => row.map((cell) => !!cell))
     );
@@ -140,19 +157,8 @@ const useBoard = (
 
     // Update the active grid
     grid[row]![column]! = state;
-
     const setGrid = !isCrossing ? setCurrentGrid : setCrossGrid;
     setGrid(grid);
-
-    console.log({ crossGrid, currentGrid, isCrossing });
-
-    // Update the clues
-    checkClues();
-
-    // Check if the puzzle is completed
-    if (validateGrid()) {
-      setCompleted(true);
-    }
   };
 
   const changeGrid = (
@@ -180,6 +186,16 @@ const useBoard = (
     return JSON.stringify(currentGrid) === JSON.stringify(answerGrid);
   };
 
+  const handlePointerDown = (
+    event: React.PointerEvent<HTMLTableCellElement>,
+    rowIndex: number,
+    columnIndex: number
+  ) => {
+    if (event.buttons === 1) {
+      changeGrid(rowIndex, columnIndex, !isCrossing);
+    }
+  };
+
   const handlePointerOver = (
     event: React.PointerEvent<HTMLTableCellElement>,
     row: number,
@@ -190,17 +206,12 @@ const useBoard = (
       const toChangeGrid = isCrossing ? crossGrid : currentGrid;
       const referenceGrid = isCrossing ? currentGrid : crossGrid;
       if (referenceGrid[row]![column]) return;
-      changeCell(toChangeGrid, row, column, pointerFill);
-    }
-  };
-
-  const handlePointerDown = (
-    event: React.PointerEvent<HTMLTableCellElement>,
-    rowIndex: number,
-    columnIndex: number
-  ) => {
-    if (event.buttons === 1) {
-      changeGrid(rowIndex, columnIndex, !isCrossing);
+      changeCell(
+        JSON.parse(JSON.stringify(toChangeGrid)),
+        row,
+        column,
+        pointerFill
+      );
     }
   };
 
