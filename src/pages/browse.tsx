@@ -117,7 +117,7 @@ const Puzzle: NextPage = () => {
                       </a>
                     </Link>
                   </td>
-                  <td>{level.createdAt.toLocaleDateString()}</td>
+                  <td>{new Date(level.createdAt).toLocaleDateString()}</td>
                   <td>{level.size}</td>
                 </tr>
               );
