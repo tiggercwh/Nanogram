@@ -1,2 +1,7 @@
-# Picross Clone
-A clone of the popular puzzle game Picross/Nonograms made with the T3 stack(Typescript, tRPC, tailwindcss, Next.js, Prisma, MySQL)
+# Nanograms / Picross / Nonograms
+
+A simple clone of the game Nanogram, developed with the T3 Stack.
+
+This application also uses vercel's postgres database and kv for caching. 
+To clone and run this application, one has to host the database and kv, with their own choice of provider.
+One just need to set the corresponding environment variable with their own connection url.
