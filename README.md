@@ -11,14 +11,20 @@ Play the live demo: [https://nanogram.vercel.app/](https://nanogram.vercel.app/)
 
 ## ✨ Features
 
-- 🎮 Interactive puzzle solving interface
-- 🧩 Multiple difficulty levels
-- 🎨 Colorful puzzle themes
-- ⚡ Fast and responsive design
-- 🔄 Real-time game state management
-- 📱 Mobile-friendly interface
-- 🔒 User authentication (coming soon)
-- 🏆 Leaderboards (coming soon)
+### 🎮 Game Board
+
+- **Interactive Puzzle Solving**: Click to fill cells, right-click to mark as empty
+- **Smart Controls**:
+  - Click and drag to fill or clear multiple cells
+  - Right-click and drag to mark multiple cells
+  - Use keyboard shortcuts for faster solving
+- **Undo/Redo**: Easily correct mistakes with unlimited undo/redo
+
+### 🎨 Level Creation
+
+- **Built-in Editor**: Create and test your own puzzles
+- **No Backend Needed**: All levels are stored in the browser
+- **Shareable Links**: Generate links to share your custom levels
 
 ## 🛠 Tech Stack
 
