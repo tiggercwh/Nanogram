@@ -36,13 +36,22 @@ export const levelRouter = createRouter()
   })
   .query("fetchRandom", {
     async resolve({ ctx }) {
-      const [randomLevel] = await ctx.prisma.$queryRaw`
+      const randomLevel = await ctx.prisma.$queryRaw<
+        Array<{
+          id: string;
+          name: string;
+          data: any;
+          unlisted: boolean;
+          createdAt: Date;
+          updatedAt: Date;
+        }>
+      >`
         SELECT * FROM "Level"
         WHERE "unlisted" = false
         ORDER BY RANDOM()
         LIMIT 1
       `;
-      return randomLevel || null;
+      return randomLevel[0] || null;
     },
   })
   .query("fetchInfinite", {
