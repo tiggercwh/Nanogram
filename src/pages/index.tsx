@@ -1,3 +1,4 @@
+// src/pages/index.tsx
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
@@ -7,7 +8,7 @@ import { DEFAULT_PUZZLE_ID } from "../utils/env";
 import useMediaQuery from "../hooks/useMediaQuery";
 
 const Home: NextPage = () => {
-  const { data: levelData, refetch: refetchLevelData } = trpc.useQuery(
+  const { data: levelData, isLoading } = trpc.useQuery(
     ["level.fetchById", DEFAULT_PUZZLE_ID],
     { staleTime: Infinity }
   );
@@ -26,9 +27,13 @@ const Home: NextPage = () => {
           Are you good enough to solve this?
         </h2>
         <div className="my-4">
-          {levelData?.data && (
+          {isLoading ? (
+            <div className="flex justify-center items-center p-8">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-500"></div>
+            </div>
+          ) : levelData?.data ? (
             <Board levelData={levelData} isMobile={isMobile} />
-          )}
+          ) : null}
         </div>
         <div className="text-lg text-center my-4">
           This app uses the{" "}
